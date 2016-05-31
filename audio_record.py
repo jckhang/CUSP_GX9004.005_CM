@@ -44,7 +44,7 @@ sample_rate = 44100                 # Sample rate of audio device
 frames_per_buffer = 2048            # Number of audio frames delivered per hardware buffer return
 channels = 1                        # Number of audio channels (1 = mono)
 fname = str(time.time()) + '.wav'   # Output wave filename using current UTC time
-total_duration = 10.0               # Total length of wave file
+total_duration = 100.0               # Total length of wave file
 device_id = -1                      # Default audio input device ID
 recording = True                    # Boolean check to hold while wait loop
 
@@ -131,13 +131,20 @@ wavefile.setsampwidth(pa.get_sample_size(pyaudio.paInt16))
 wavefile.setframerate(sample_rate)
 
 # Start recording stream, triggering hardware buffer fill and callback
-recorder.start_stream()
+st = int(time.ctime()[11:13])
+now = int(time.ctime()[11:13])
+while now-st<13:
+    recorder.start_stream()
+    now = int(time.ctime()[11:13])
 
 # Hold script in loop waiting for wave file to meet desired file length in seconds
 while recording:
     time.sleep(0.1)
+    print time.ctime()
 
 # Close all open streams and files
 recorder.close()
 pa.terminate()
 wavefile.close()
+import time
+print int(time.ctime()[11:13])
